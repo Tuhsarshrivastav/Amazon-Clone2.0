@@ -1,13 +1,28 @@
 import Image from "next/image";
 import { useState } from "react";
 import { StarIcon } from "@heroicons/react/solid";
-import CurrencyFormat from "react-currency-format";
+import { useDispatch } from "react-redux";
+import { addToBasket } from "../slices/basketSlice";
 const MIX_RATING = 5;
 const MIN_RATING = 1;
 const Product = ({ id, title, price, description, category, image }) => {
   const [rating, setRating] = useState(
     Math.floor(Math.random() * (MIX_RATING - MIN_RATING + 1)) * MIN_RATING
   );
+  const dispatch = useDispatch();
+  const addItemTobasket = () => {
+    const product = {
+      id,
+      title,
+      price,
+      description,
+      category,
+      image,
+      rating,
+      hasPrime,
+    };
+    dispatch(addToBasket(product));
+  };
 
   const [hasPrime] = useState(Math.random() < 0.5);
   return (
@@ -36,7 +51,9 @@ const Product = ({ id, title, price, description, category, image }) => {
           <p className="text-xs text-gray-500">FREE next-day Delivery</p>
         </div>
       )}
-      <button className="mt-auto button">Add to Basket</button>
+      <button onClick={addItemTobasket} className="mt-auto button">
+        Add to Basket
+      </button>
     </div>
   );
 };
